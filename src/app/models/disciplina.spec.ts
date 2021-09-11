@@ -6,6 +6,7 @@ describe('Disciplina', () => {
 
   beforeEach(() => {
     disciplina = new Disciplina(
+      'WEB03',
       'Angular',
     );
   });

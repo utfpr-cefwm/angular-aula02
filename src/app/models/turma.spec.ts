@@ -8,6 +8,7 @@ describe('Turma', () => {
   beforeEach(() => {
     turma = new Turma(
       new Disciplina(
+        'WEB03',
         'Angular',
       ),
       2020,
