@@ -1,6 +1,7 @@
 <button
   *ngFor="let turma of turmas"
   type="button"
+  (click)="selecionaTurma(turma)"
 >
   {{ turma.nome }}
 </button>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 import { Turma } from 'src/app/models/turma';
 import { Disciplina } from 'src/app/models/disciplina';
@@ -9,6 +9,9 @@ import { Disciplina } from 'src/app/models/disciplina';
   styleUrls: ['./lista-turmas.component.css'],
 })
 export class ListaTurmasComponent implements OnInit {
+
+  @Output()
+  public turmaSelecionada: EventEmitter<Turma> = new EventEmitter();
 
   public turmas: Turma[] = [
     new Turma(
@@ -38,6 +41,10 @@ export class ListaTurmasComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  public selecionaTurma(turma: Turma) {
+    this.turmaSelecionada.emit(turma);
   }
 
 }
