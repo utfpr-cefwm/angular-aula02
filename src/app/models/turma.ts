@@ -11,4 +11,11 @@ export class Turma {
   ) {
   }
 
+  /**
+   * Nome da turma, composto por `'DISCIPLINA-ANO/PERÍODO'`.
+   */
+  public get nome(): string {
+    return `${this.disciplina.codigo}-${this.ano}/${this.periodo}`;
+  }
+
 }
