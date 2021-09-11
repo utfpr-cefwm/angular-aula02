@@ -1,0 +1,18 @@
+:host {
+  display: flex;
+}
+main {
+  margin-left: 1em;
+  flex: auto;
+  text-align: center;
+}
+
+@media screen and (max-width: 40em) {
+  :host {
+    flex-direction: column;
+  }
+  main {
+    margin-left: 0;
+    margin-top: 1em;
+  }
+}
