@@ -4,7 +4,12 @@
   >
   </app-lista-turmas>
 </nav>
-<main>
-  Selecione uma turma para exibir os detalhes.
+<main *ngIf="turma; else semTurma">
+  {{ turma!.nome }}
 </main>
+<ng-template #semTurma>
+  <main>
+    Selecione uma turma para exibir os detalhes.
+  </main>
+</ng-template>
 <router-outlet></router-outlet>

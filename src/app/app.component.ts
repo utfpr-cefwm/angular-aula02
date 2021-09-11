@@ -9,8 +9,13 @@ import { Turma } from './models/turma';
 })
 export class AppComponent {
 
+  /**
+   * Turma para ser renderizada no template, se existir.
+   */
+  public turma?: Turma;
+
   public exibeTurma(turma: Turma) {
-    console.log('Turma selecionada', turma);
+    this.turma = turma;
   }
 
 }
