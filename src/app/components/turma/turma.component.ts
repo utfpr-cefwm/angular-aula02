@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
+import { Turma } from 'src/app/models/turma';
 
 @Component({
   selector: 'app-turma',
@@ -6,6 +11,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./turma.component.css'],
 })
 export class TurmaComponent implements OnInit {
+
+  @Input()
+  public turma!: Turma;
 
   constructor(
   ) {

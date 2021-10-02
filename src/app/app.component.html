@@ -5,7 +5,7 @@
   </app-lista-turmas>
 </nav>
 <main *ngIf="turma; else semTurma">
-  {{ turma!.nome }}
+  <app-turma [turma]="turma"></app-turma>
 </main>
 <ng-template #semTurma>
   <main>

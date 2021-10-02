@@ -1,0 +1,21 @@
+<section>
+  <header>
+    <h1>
+      Turma: {{ turma.nome }}
+    </h1>
+    <div>
+      Nome da disciplina:
+      <b>
+        {{ turma.disciplina.nome }}
+      </b>
+    </div>
+  </header>
+  <main>
+    <h2>
+      Alunos:
+    </h2>
+    <div *ngFor="let aluno of turma.alunos">
+      {{ aluno.codigo }} - {{ aluno.nome }}
+    </div>
+  </main>
+</section>
