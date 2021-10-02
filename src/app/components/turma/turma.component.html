@@ -14,8 +14,16 @@
     <h2>
       Alunos:
     </h2>
-    <div *ngFor="let aluno of turma.alunos">
-      {{ aluno.codigo }} - {{ aluno.nome }}
+    <div
+      *ngFor="let aluno of turma.alunos"
+      class="aluno"
+    >
+      <span class="codigo">
+        {{ aluno.codigo }}
+      </span>
+      <span class="nome">
+        {{ aluno.nome }}
+      </span>
     </div>
   </main>
 </section>

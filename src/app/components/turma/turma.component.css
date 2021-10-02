@@ -1,0 +1,10 @@
+.aluno {
+  display: flex;
+  border: 1px solid black;
+}
+.aluno span.codigo {
+  flex: 5em 0 1;
+}
+.aluno span.nome {
+  flex: 5em 1 1;
+}
