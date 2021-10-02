@@ -1,5 +1,5 @@
 <button
-  *ngFor="let turma of turmas"
+  *ngFor="let turma of (turmas$ | async)"
   type="button"
   (click)="selecionaTurma(turma)"
 >
