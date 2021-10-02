@@ -7,10 +7,12 @@ import {
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
+import { of } from 'rxjs';
 
 import { AppComponent } from './app.component';
 import { Disciplina } from './models/disciplina';
-import { Turma } from './models/turma';
+import { Turma, TurmaDetalhes } from './models/turma';
+import { TurmaService } from './services/turma.service';
 
 @Component({
   selector: 'app-turma',
@@ -21,7 +23,7 @@ import { Turma } from './models/turma';
 })
 export class TurmaComponentMock {
   @Input()
-  public turma!: Turma;
+  public turma!: TurmaDetalhes;
 }
 
 @Component({
@@ -40,6 +42,7 @@ describe('AppComponent', () => {
 
   let fixture: ComponentFixture<AppComponent>;
   let app: AppComponent;
+  let turmaService: jasmine.SpyObj<TurmaService>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -51,9 +54,21 @@ describe('AppComponent', () => {
         ListaTurmasComponentMock,
         TurmaComponentMock,
       ],
+      providers: [
+        {
+          provide: TurmaService,
+          useValue: jasmine.createSpyObj(
+            'TurmaService',
+            [
+              'getDetalhes',
+            ],
+          ),
+        },
+      ],
     }).compileComponents();
     fixture = TestBed.createComponent(AppComponent);
     app = fixture.componentInstance;
+    turmaService = TestBed.inject(TurmaService) as jasmine.SpyObj<TurmaService>;
   });
 
   it('should create the app', () => {
@@ -69,15 +84,20 @@ describe('AppComponent', () => {
     const listaTurmas: ListaTurmasComponentMock = fixture.debugElement.query(
       By.directive(ListaTurmasComponentMock)
     ).componentInstance;
-    listaTurmas.turmaSelecionada.emit(new Turma(
-      new Disciplina(
-        'WEB11',
-        'Git',
-      ),
+    turmaService.getDetalhes.and.returnValue(of(new TurmaDetalhes(
+      'fafafafa',
       2020,
       2,
+      new Disciplina('WEB11', 'Git'),
       [
       ],
+    )));
+    listaTurmas.turmaSelecionada.emit(new Turma(
+      'fafafafa',
+      2020,
+      2,
+      'WEB11',
+      0,
     ));
 
     fixture.detectChanges();
@@ -86,13 +106,14 @@ describe('AppComponent', () => {
   });
 
   it('deve renderizar a turma selecionada, quando houver uma', () => {
-    app.turma = new Turma(
+    app.turma = new TurmaDetalhes(
+      'fafafafafafafa',
+      2020,
+      2,
       new Disciplina(
         'WEB11',
         'Git',
       ),
-      2020,
-      2,
       [
       ],
     );

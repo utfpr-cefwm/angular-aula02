@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { Aluno } from 'src/app/models/aluno';
 import { Disciplina } from 'src/app/models/disciplina';
-import { Turma } from 'src/app/models/turma';
+import { TurmaDetalhes } from 'src/app/models/turma';
 
 import { TurmaComponent } from './turma.component';
 
@@ -22,13 +22,14 @@ describe('TurmaComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TurmaComponent);
     component = fixture.componentInstance;
-    component.turma = new Turma(
+    component.turma = new TurmaDetalhes(
+      'fafafafafaf',
+      2020,
+      1,
       new Disciplina(
         'CODE_MOCK',
         'Disciplina Mock',
       ),
-      2020,
-      1,
       [
         new Aluno(
           123,

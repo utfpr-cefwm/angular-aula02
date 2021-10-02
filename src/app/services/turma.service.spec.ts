@@ -5,10 +5,11 @@ import { of } from 'rxjs';
 
 import { Turma } from '../models/turma';
 import { Turma as ITurma } from '../interfaces/turma';
+import { TurmaDetalhes as ITurmaDetalhes } from '../interfaces/turma';
 import { TurmaService } from './turma.service';
 import { delay } from 'rxjs/operators';
 
-const turmasFake: ITurma[] = [
+const turmasFake: ITurmaDetalhes[] = [
   {
     _id: 'fafafafafafa',
     disciplina: {
@@ -60,11 +61,17 @@ describe('TurmaService', () => {
   describe('get', () => {
 
     it('deve retornar models a partir da resposta HTTP', (doneFn: DoneFn) => {
-      httpClient.get.and.returnValue(of(turmasFake).pipe(delay(10)));
+      httpClient.get.and.returnValue(of(turmasFake.map<ITurma>(tF => ({
+        _id: tF._id,
+        ano: tF.ano,
+        periodo: tF.periodo,
+        disciplina_codigo: tF.disciplina.codigo,
+        alunos_total: tF.alunos.length,
+      }))).pipe(delay(10)));
       service.get().subscribe((turmas: Turma[]) => {
         expect(turmas).toHaveSize(1);
         expect(turmas[0]).toBeInstanceOf(Turma);
-        expect(turmas[0].alunos).toHaveSize(1);
+        expect(turmas[0].quantidadeAlunos).toBe(1);
         doneFn();
       });
     });

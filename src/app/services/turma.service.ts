@@ -6,8 +6,9 @@ import { map } from 'rxjs/operators';
 
 import { Aluno } from '../models/aluno';
 import { Disciplina } from '../models/disciplina';
-import { Turma } from '../models/turma';
+import { Turma, TurmaDetalhes } from '../models/turma';
 import { Turma as ITurma } from '../interfaces/turma';
+import { TurmaDetalhes as ITurmaDetalhes } from '../interfaces/turma';
 
 @Injectable({
   providedIn: 'root',
@@ -24,18 +25,31 @@ export class TurmaService {
     return this.httpClient.get<ITurma[]>(`${this.baseUrl}/turmas`).pipe(
       map(turmasRaw => turmasRaw.map(turmaRaw => {
         return new Turma(
-          new Disciplina(
-            turmaRaw.disciplina.codigo,
-            turmaRaw.disciplina.nome,
-          ),
+          turmaRaw._id,
           turmaRaw.ano,
           turmaRaw.periodo,
-          turmaRaw.alunos.map(alunoRaw => new Aluno(
-            alunoRaw.codigo,
-            alunoRaw.nome,
-          )),
+          turmaRaw.disciplina_codigo,
+          turmaRaw.alunos_total,
         );
       })),
+    );
+  }
+
+  public getDetalhes(_id: string): Observable<TurmaDetalhes> {
+    return this.httpClient.get<ITurmaDetalhes>(`${this.baseUrl}/turmas/${_id}`).pipe(
+      map(turmaRaw => new TurmaDetalhes(
+        turmaRaw._id,
+        turmaRaw.ano,
+        turmaRaw.periodo,
+        new Disciplina(
+          turmaRaw.disciplina.codigo,
+          turmaRaw.disciplina.nome,
+        ),
+        turmaRaw.alunos.map(alunoRaw => new Aluno(
+          alunoRaw.codigo,
+          alunoRaw.nome,
+        )),
+      )),
     );
   }
 
