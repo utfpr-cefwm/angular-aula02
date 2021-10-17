@@ -4,7 +4,7 @@
   >
   </app-lista-turmas>
 </nav>
-<main *ngIf="turma; else semTurma">
+<main *ngIf="(turmaDetalhes$ | async) as turma; else semTurma">
   <app-turma [turma]="turma"></app-turma>
 </main>
 <ng-template #semTurma>
