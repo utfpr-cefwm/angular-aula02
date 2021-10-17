@@ -1,7 +1,17 @@
 import { Component } from '@angular/core';
 
-import { Observable, Subject } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import {
+  combineLatest,
+  Observable,
+  Subject,
+} from 'rxjs';
+import {
+  distinctUntilChanged,
+  map,
+  shareReplay,
+  startWith,
+  switchMap,
+} from 'rxjs/operators';
 
 import { Turma, TurmaDetalhes } from './models/turma';
 import { TurmaService } from './services/turma.service';
@@ -20,13 +30,64 @@ export class AppComponent {
 
   public turmaDetalhes$: Observable<TurmaDetalhes>;
 
+  /**
+   * Emite `true` sempre que houver um carregamento de informação.
+   */
+  public carregando$: Observable<boolean>;
+
+  /**
+   * Indica o conteúdo principal a exibir.
+   */
+  public templateMain$: Observable<string>;
+
   constructor(
     private turmaService: TurmaService,
   ) {
+
     this.turmaDetalhes$ = this.turma$.pipe(
+      distinctUntilChanged(),
       map((turma: Turma) => turma._id),
       switchMap((id: string) => this.turmaService.getDetalhes(id)),
+      shareReplay(1),
     );
+
+    this.carregando$ = combineLatest([
+      this.turma$.pipe(
+        startWith(undefined),
+      ),
+      this.turmaDetalhes$.pipe(
+        startWith(undefined),
+      ),
+    ]).pipe(
+      map(([
+        turmaResumida,
+        turmaDetalhes,
+      ]) => {
+        return turmaResumida?._id !== turmaDetalhes?._id;
+      }),
+    );
+
+    this.templateMain$ = combineLatest([
+      this.carregando$.pipe(
+      ),
+      this.turmaDetalhes$.pipe(
+        startWith(undefined),
+      ),
+    ]).pipe(
+      map(([
+        carregando,
+        turmaDetalhes,
+      ]) => {
+        if (carregando) {
+          return 'carregando';
+        }
+        if (turmaDetalhes) {
+          return 'turma';
+        }
+        return 'selecione';
+      }),
+    );
+
   }
 
   public exibeTurma(turma: Turma) {

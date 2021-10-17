@@ -4,12 +4,26 @@
   >
   </app-lista-turmas>
 </nav>
-<main *ngIf="(turmaDetalhes$ | async) as turma; else semTurma">
-  <app-turma [turma]="turma"></app-turma>
-</main>
-<ng-template #semTurma>
-  <main>
+
+<main [ngSwitch]="templateMain$ | async">
+
+  <ng-container *ngSwitchCase="'carregando'">
+    Carregando...
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'turma'">
+    <app-turma [turma]="(turmaDetalhes$ | async)!"></app-turma>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="'selecione'">
     Selecione uma turma para exibir os detalhes.
-  </main>
-</ng-template>
+  </ng-container>
+
+  <ng-container *ngSwitchDefault>
+    Um erro foi encontrado.<br />
+    Caso sua navegação esteja prejudicada, por gentileza atualize a página.
+  </ng-container>
+
+</main>
+
 <router-outlet></router-outlet>
